@@ -1,0 +1,194 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Editor
+{% endblock %}
+
+{% block main %}
+    <div>
+        <button id="show-form-Btn" class="btn btn-primary btn-lg">Create a New Breathwork</button>
+    </div>
+
+    <div class="container mt-4">
+        <div id="form-section" class="row justify-content-center" style="display:none">
+            <div class="col-12 col-md-8 col-lg-6 mb-5">
+                <h2>Create a New Breathwork </h2>
+                <form action="/editor" method="post" id="new-breathwork-form">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Breathwork Name</label>
+                        <input type="text" id="name" name="name" class="form-control" autocomplete="off" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea id="description" name="description" maxlength="100" placeholder="Max 100 characters" autocomplete="off" rows="3" cols="40" class="form-control"></textarea>
+                    </div>
+
+                    <h4>Breathing Pattern</h4>
+                    <div class="mb-3">
+                        <label for="inhale" class="form-label">Inhale</label>
+                        <input type="number" class="form-control" id="inhale" name="inhale" autocomplete="off" min="1" required placeholder="Seconds (minimum 1)">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="inhale-hold" class="form-label">Inhale Hold</label>
+                        <input type="number" class="form-control" id="inhale-hold" name="inhale_hold" autocomplete="off" min="0" required placeholder="Seconds (minimum 0)">
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label for="exhale" class="form-label">Exhale</label>
+                        <input type="number" class="form-control" id="exhale" name="exhale" autocomplete="off" min="1" required placeholder="Seconds (minimum 1)">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="exhale-hold" class="form-label">Exhale Hold</label>
+                        <input type="number" class="form-control" id="exhale-hold" name="exhale_hold" autocomplete="off" min="0" required placeholder="Seconds (minimum 0)">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="rounds" class="form-label">Rounds</label>
+                        <input type="number" class="form-control" id="rounds" name="rounds" autocomplete="off" min="1" required placeholder="Total rounds (minimum 1)">
+                    </div>
+
+                    <div class="mb-3 d-flex gap-3">
+                        <button type="submit" class="btn btn-primary btn-lg" id="add">Add Breathwork</button>
+                        <button type="button" class="btn btn-danger btn-lg" id="cancel" name="cancel">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="editor-section">
+        <h2>All of your breathworks</h2>
+        <table class="table table-striped table-hover" id="breathwork-table">
+            <thead class="custom-header">
+                <tr>
+                    <th>Breathwork name</th>
+                    <th>Breathwork description</th>
+                    <th>Inhale</th>
+                    <th>Exhale Hold</th>
+                    <th>Exhale</th>
+                    <th>Exhale Hold</th>
+                    <th>Rounds</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody id="breathwork-table-body">
+                {% for breathwork in breathworks %}
+                    <tr id="row-{{ breathwork.id }}">
+                        <td>{{ breathwork.name }}</td>
+                        <td>{{ breathwork.description }}</td>
+                        <td>{{ breathwork.inhale }}</td>
+                        <td>{{ breathwork.inhale_hold }}</td>
+                        <td>{{ breathwork.exhale }}</td>
+                        <td>{{ breathwork.exhale_hold }}</td>
+                        <td>{{ breathwork.rounds }}</td>
+                        <td>
+                            <a href="/edit-breathwork/{{breathwork.id}}" class="btn btn-sm btn-primary edit-btn">Edit</a>
+                        </td>
+                        <td>
+                            <button data-id="{{ breathwork.id }}" class="btn btn-sm btn-danger delete-btn">Delete</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function addRowTable(newBreathwork) {
+        // add the new created row to the table UI
+            const tableBody = document.getElementById("breathwork-table-body")
+            const newRow = document.createElement("tr");
+            newRow.id = `row-${newBreathwork.id}`;
+
+            newRow.innerHTML = `
+            <td>${ newBreathwork.name }</td>
+            <td>${ newBreathwork.description }</td>
+            <td>${ newBreathwork.inhale }</td>
+            <td>${ newBreathwork.inhale_hold }</td>
+            <td>${ newBreathwork.exhale }</td>
+            <td>${ newBreathwork.exhale_hold }</td>
+            <td>${ newBreathwork.rounds }</td>
+            <td><a href="/edit-breathwork/${newBreathwork.id}" class="btn btn-sm btn-primary edit-btn">Edit</a></td>
+
+            <td><button data-id=${ newBreathwork.id } class="btn btn-sm btn-danger delete-btn">Delete</button></td>`
+            tableBody.appendChild(newRow);
+        }
+        document.getElementById("show-form-Btn").addEventListener("click", function() {
+            document.getElementById("form-section").style.display = "block";
+            this.style.display = "none";
+        });
+
+    // I used AJAX so that the new breathwork be added to the table without the need to reload the page
+        document.getElementById("new-breathwork-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch("/editor", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const responseError = await response.json();
+                    alert("Error: " + responseError.message);
+                    return;
+                }
+            // if response.ok
+                const responseData = await response.json();
+                const newBreathwork = responseData.new_breathwork;
+                addRowTable(newBreathwork);
+
+            // update UI
+                form.reset();
+                document.getElementById("form-section").style.display = "none";
+                document.getElementById("show-form-Btn").style.display = "block";
+
+            // delay the alert after the UI is updated
+                setTimeout(function() {
+                    alert("Added successfuly!");
+                }, 10);
+
+            } catch (error) {
+                alert("Network error occurred");
+            }
+        });
+
+        document.getElementById("cancel").addEventListener("click", function() {
+            document.getElementById("form-section").style.display = "none";
+            document.getElementById("show-form-Btn").style.display = "block";
+        });
+
+    // I need this EventListener to be added to the dynamically added rows
+    // Solution: event delegation
+    // add EventListener to the static parent -- check target -- responde
+        document.getElementById("breathwork-table-body").addEventListener("click", async function(event) {
+        // the delete button that fired the event
+            const targetDeleteBtn = event.target.closest(".delete-btn");
+
+            if (targetDeleteBtn) {
+                if (!confirm("Are you sure you want to delete this breathwok!")) {
+                    event.preventDefault();
+                    return;
+                }
+                let breathwork_id = targetDeleteBtn.dataset.id;
+                let response = await fetch(`/delete-breathwork/${breathwork_id}`, {
+                    method: "DELETE"
+                });
+
+                if (response.ok) {
+                // now remove that row from DOM
+                    document.getElementById(`row-${breathwork_id}`).remove();
+                } else {
+                    alert("Failed to delete the log.")
+                }
+            }
+        });
+    </script>
+{% endblock %}

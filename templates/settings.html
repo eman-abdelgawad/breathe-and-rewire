@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Settings
+{% endblock %}
+
+{% block main %}
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="card shadow-sm p-4" style="max-width: 400px; width: 100%;">
+        <h3 class="text-center mb-4">Change Password</h3>
+    <form action="/settings" method="post">
+        <div class="mb-3">
+            <label for="Old-password" class="form-label">Old Password</label>
+            <input id="Old-password" autocomplete="off" autofocus class="form-control" name="oldpassword" type="password" required>
+        </div>
+        <div class="mb-3">
+            <label for="new-password" class="form-label">New Password</label>
+            <input id="new-password" class="form-control" name="newpassword" type="password" required>
+        </div>
+        <div class="mb-3">
+            <label for="confirmation" class="form-label">Confirmation</label>
+            <input id="confirmation" class="form-control" name="confirmation" type="password" required>
+        </div>
+            <button class="btn btn-primary mx-auto mt-3 d-block" type="submit">Change Password</button>
+    </form>
+    </div>
+    </div>
+{% endblock %}

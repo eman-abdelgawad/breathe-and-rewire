@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <div class="text-center apology">
+        <img class="img-fluid" src="{{ url_for ('static', filename='images/flat-design-no-data-illustration -9170819.jpg') }}" alt="{{ top }}">
+
+        <div class="apology-top">{{ top }}</div>
+        <div class="apology-bottom">{{ bottom }}</div>
+    </div>
+{% endblock %}

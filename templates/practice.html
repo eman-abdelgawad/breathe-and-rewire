@@ -1,0 +1,250 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Practice
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-10">
+                <div class="breathwork-player">
+                    <div class="breathwork-info">
+                        <h3>{{ breathwork.name }}</h3>
+                        <p class="text-secondary">{{ breathwork.description }}</p>
+                        <p>
+                            Pattern: {{ breathwork.inhale }}, {{ breathwork.inhale_hold }} , {{ breathwork.exhale }}, {{ breathwork.exhale_hold }} seconds.
+                        </p>
+                        <p class="rounds-item">Rounds: {{ breathwork.rounds }} </p>
+                        <input id="breathwork-info" type="hidden" value="{{ breathwork.id }}" data-name="{{ breathwork.name }}" data-description="{{ breathwork['description'] }}" data-inhale="{{ breathwork.inhale }}" data-inhale-hold="{{ breathwork['inhale_hold'] }}" data-exhale="{{ breathwork.exhale }}" data-exhale-hold="{{ breathwork.exhale_hold }}" data-rounds="{{ breathwork.rounds }}">
+                        <hr class="my-4 border-2 border-primary">
+                        <div id="guidance" class="collapsed">
+                            <h4>Guidance</h4>
+                            <p class="fw-bold">Remember: Each mindful breath gently retrains your nervous system, inviting calm and building resilience.</p>
+
+                            <p>Make yourself as comfortable as possible. Loosen any clothes that restrict your breathing.</p>
+                            <p>Sit upright or lie down with your spine neutral.</p>
+                            <p>Place one hand on your belly and one on your chest to feel the breath. Close your eyes if it feels safe.</p>
+
+                            <h4>Pre‑Breathwork Checkpoint</h4>
+                            <ul>
+                                <li>Pause before starting. Close your eyes and take a natural breath.</li>
+                                <li>Scan your body: Notice tension, posture, or sensations (tight shoulders, heavy chest, restless legs).</li>
+                            </ul>
+
+                            <h4>Post‑Breathwork Checkpoint</h4>
+                            <ul>
+                                <li>Pause again. Sit quietly for 1–2 minutes after finishing.</li>
+                                <li>Rescan your body: Compare sensations: lighter chest, softer jaw, slower heartbeat.</li>
+                                <li>Notice your mind: Has the pace of thoughts shifted?</li>
+                                <li>Do you feel more clarity or spaciousness?</li>
+                                <li>Check emotions: Did anything soften, rise, or release?</li>
+                            </ul>
+
+                            <h4>Disclaimer</h4>
+                            <p>Breathwork should feel supportive, not forced. If at any point you feel uncomfortable, lightheaded, or uneasy, please stop gently, return to natural breathing, and rest. Always listen to your body, it knows your limits better than any technique.
+                                Remember, you can pause or stop anytime.
+                            </p>
+                        </div>
+                        <button id="showMoreBtn" class="btn btn-link text-primary">show more</button>
+                        <hr class="my-4 border-2 border-primary">
+                        <button id="startBtn" class="btn btn-primary" data-id="{{ breathwork.id }}">Take a Deep Breath</button>
+                    </div>
+
+                    <div id="counter" class="Breathwork-counter">
+                        <div id="rounds"></div>
+                        <div id="timer"></div>
+                        <div id="phase"></div>
+                        <div id="progressContainer">
+                            <div id="progressBar" class="bg-primary"></div>
+                        </div>
+                        <div id="feedback"></div>
+                    </div>
+                    <form action="/practice" method="post" id="practice-form">
+                        <input type="hidden" name="id" value="{{ breathwork.id }}">
+                        <input type="hidden" name="duration" id="duration" value="">
+                        <textarea name="notes" id="notes" rows="5" cols="40" placeholder="Note any sensations, emotions, or insights..." maxlength="150" style="display:none;"></textarea>
+                        <button type="submit" id="saveBtn" class="btn btn-success" style="display:none;">Save Session</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let currentRound = 1;
+        let totalRounds = 0;
+        let startTime = null;
+        let duration = 0;
+        let isRunning = false;
+        let phaseTimeout = null;
+        let interval = null;
+
+        function clearTimerUi() {
+            document.getElementById("rounds").innerHTML = "";
+            document.getElementById("timer").innerHTML = "";
+            document.getElementById("timer").style.display = "none";
+            document.getElementById("phase").innerHTML = "";
+        }
+
+        function cleanupTimers() {
+            if (phaseTimeout) {
+                clearTimeout(phaseTimeout);
+                phaseTimeout = null;
+            }
+            if (interval) {
+                clearInterval(interval);
+                interval = null;
+            }
+        }
+
+        function finalizeSession() {
+        // clear timer - calcualte duration - update UI
+            cleanupTimers();
+
+            if (!isRunning) {
+                return;
+            }
+
+            isRunning = false;
+
+            const endTime = Date.now();
+            duration = Math.floor((endTime - startTime) / 1000);
+            clearTimerUi();
+            document.getElementById("progressContainer").style.display = "none";
+            document.getElementById("progressBar").style.width = "0%";
+            document.getElementById("duration").value = duration;
+
+            let minutes = Math.floor(duration / 60);
+            let seconds = duration % 60;
+            document.getElementById("feedback").innerHTML = `<p>Well done! You've completed <span class="fw-bold session-duration">${minutes}m ${seconds}s</span> of Breathwork!</p>`;
+
+            setTimeout(function(){
+                document.getElementById("practice-form").submit();
+            }, 500);
+        }
+
+        function startPhase(label, seconds, callback) {
+            if (!isRunning) {
+                return;
+            }
+
+        // if the phase time is 0
+            if (seconds <= 0) {
+                phaseTimeout = setTimeout(function() {
+                    if (isRunning) callback();
+                }, 0);
+                return;
+            }
+
+            const phaseStartTime = Date.now();
+            document.getElementById("phase").innerHTML = label;
+            document.getElementById("timer").innerHTML = `0 / ${seconds}`;
+
+        // Reset progress bar
+            const bar = document.getElementById("progressBar");
+            if (bar) {
+                bar.style.transition = 'none';
+                bar.style.width = "0%";
+            // Accessing it forces the browser to recalculate styles and layout (a "reflow").
+                void bar.offsetHeight;
+                bar.style.transition = `width ${seconds}s linear`;
+                bar.style.width = "100%";
+            }
+
+            interval = setInterval(function() {
+                if (!isRunning) {
+                    return;
+                    cleanTimerS();
+                }
+                const elapsed = Math.floor((Date.now() - phaseStartTime) / 1000);
+                document.getElementById("timer").innerHTML = `${elapsed} / ${seconds}`;
+
+                if (elapsed >= seconds) {
+                    clearInterval(interval);
+                    interval = null;
+                    if (bar) {
+                        bar.style.width = "100%";
+                    }
+                    phaseTimeout = setTimeout(function() {
+                        if (isRunning) callback();
+                    }, 100);
+                }
+
+            }, 1000);
+        }
+
+        function startBreathingRounds(inhale, inhaleHold, exhale, exhaleHold) {
+        //counters: I have 4 phases and x rounds
+            if (!isRunning) {
+                return;
+            }
+
+            if (currentRound > totalRounds) {
+                finalizeSession();
+                return;
+            }
+
+            document.getElementById("rounds").innerHTML = `Round <span class="text-primary">${currentRound}</span> of ${totalRounds}`;
+
+            startPhase("Inhale", inhale, function() {
+                startPhase("Hold (after inhale)", inhaleHold, function() {
+                    startPhase("Exhale", exhale, function() {
+                        startPhase("Hold (after Exhale)", exhaleHold, function() {
+                        // one round complete
+                            currentRound++;
+                            startBreathingRounds(inhale, inhaleHold, exhale, exhaleHold)
+                        });
+                    });
+                });
+            });
+        }
+
+        function startSession() {
+            if (isRunning) {
+                return;
+            }
+            const breathworkInfo = document.getElementById("breathwork-info");
+            const inhale = parseInt(breathworkInfo.dataset.inhale);
+            const inhaleHold = parseInt(breathworkInfo.dataset.inhaleHold);
+            const exhale = parseInt(breathworkInfo.dataset.exhale);
+            const exhaleHold = parseInt(breathworkInfo.dataset.exhaleHold);
+            totalRounds = parseInt(breathworkInfo.dataset.rounds);
+
+            currentRound = 1;
+            isRunning = true;
+            startTime = Date.now();
+
+            document.getElementById("progressContainer").style.display = "block";
+            document.getElementById("saveBtn").style.display = "block";
+            document.getElementById("notes").style.display = "block";
+            this.style.display = "none";
+            startBreathingRounds(inhale, inhaleHold, exhale, exhaleHold);
+        }
+
+        function endSession(event) {
+            // prevent submitting the form, giving the user time to read the message
+            event.preventDefault();
+
+            if (!isRunning) {
+                return;
+            }
+            finalizeSession();
+        }
+
+        document.getElementById("startBtn").addEventListener("click", startSession);
+        document.getElementById("saveBtn").addEventListener("click", endSession);
+
+        document.getElementById("showMoreBtn").addEventListener("click", function() {
+            console.log("clicked me");
+
+            const guidance = document.getElementById("guidance");
+            if (guidance.classList.contains("collapsed")) {
+                guidance.classList.remove("collapsed");
+                this.textContent = "Show less";
+            } else {
+                guidance.classList.add("collapsed");
+                this.textContent = "Show more";
+            }
+        });
+    </script>
+{% endblock %}

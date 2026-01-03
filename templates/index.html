@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Library
+{% endblock %}
+
+{% block main %}
+    <div class="container my-4">
+        <div class="mb-4 d-flex gap-2">
+            <button id="defaultBtn" class="btn btn-primary active">Default Breathworks</button>
+            <button id="customBtn" class="btn btn-outline-primary">Custom Breathworks </button>
+        </div>
+        <div id="defaultBreathworks" class="breathworks-section">
+            <h2 class="mb-3">Default Breathworks</h2>
+            <div class="row g-4">
+                {% for breathwork in default_breathworks %}
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body d-flex flex-column">
+                                <h3>{{ breathwork.name }}</h3>
+                                <p class="text-secondary">{{ breathwork.description }}</p>
+                                <ul>
+                                    <li>Inhale: {{ breathwork.inhale }} seconds</li>
+                                    <li>Inhale Hold: {{ breathwork.inhale_hold }} seconds</li>
+                                    <li>Exhale: {{ breathwork.exhale }} seconds</li>
+                                    <li>Exhale Hold: {{ breathwork.exhale_hold }} seconds</li>
+                                    <li class="rounds-item">Rounds: {{ breathwork.rounds }}</li>
+                                </ul>
+                                <div class="mt-auto">
+                                    <a href="/practice?breathworkId={{breathwork.id}}" id="startBtn" class="btn btn-primary">Practice</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor%}
+            </div>
+        </div>
+
+        <div id="customBreathworks" class="breathworks-section" style="display:none;">
+            <h2 class="mb-3">Custom Breathworks</h2>
+            <div class="row g-4">
+                {% for breathwork in custom_breathworks %}
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body d-flex flex-column">
+                                <h3>{{ breathwork.name }}</h3>
+                                <p>{{ breathwork.description }}</p>
+                                <ul>
+                                    <li>Inhale: {{ breathwork.inhale }} seconds</li>
+                                    <li>Inhale Hold: {{ breathwork.inhale_hold }} seconds</li>
+                                    <li>Exhale: {{ breathwork.exhale }} seconds</li>
+                                    <li>Exhale Hold: {{ breathwork.exhale_hold }} seconds</li>
+                                    <li class="rounds-item">Rounds: {{ breathwork.rounds }}</li>
+                                </ul>
+                                <div class="mt-auto">
+                                    <a href="/practice?breathworkId={{breathwork.id}}" id="startBtn" class="btn btn-primary">Practice</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const defaultBtn = document.getElementById("defaultBtn");
+                const customtBtn = document.getElementById("customBtn");
+
+                const defaultBreathworks = document.getElementById("defaultBreathworks");
+                const customBreathworks = document.getElementById("customBreathworks");
+
+                defaultBtn.addEventListener("click", function() {
+                    defaultBreathworks.style.display = "block";
+                    customBreathworks.style.display = "none";
+
+                    // edit classes to buttons
+                    defaultBtn.classList.add("active");
+                    defaultBtn.classList.remove("btn-outline-primary");
+                    defaultBtn.classList.add("btn-primary");
+
+                    customtBtn.classList.remove("active");
+                    customtBtn.classList.add("btn-outline-primary");
+                    customtBtn.classList.remove("btn-primary");
+                });
+
+                customtBtn.addEventListener("click", function() {
+                    customBreathworks.style.display = "block";
+                    defaultBreathworks.style.display = "none";
+
+                    // edit classes to buttons
+                    customtBtn.classList.add("active");
+                    customtBtn.classList.remove("btn-outline-primary");
+                    customtBtn.classList.add("btn-primary");
+
+                    defaultBtn.classList.remove("active");
+                    defaultBtn.classList.add("btn-outline-primary");
+                    defaultBtn.classList.remove("btn-primary");
+                });
+            });
+        </script>
+{% endblock %}

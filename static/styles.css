@@ -1,0 +1,443 @@
+/*
+Color Palette
+
+primary: #1E4680
+danger:  #801d1d
+
+primary: #1E4680, lighter: #c5ccd6,
+
+danger: #801d1d,
+success: #137a49,
+
+brown: #29221b,
+beige: #d9c7ac, #ebd8ba, #f2e5d1, #f9f2e8
+
+*/
+
+
+/* =========================================================
+   PRIMARY COLOR OVERRIDES (no Sass required)
+   ========================================================= */
+
+:root {
+    --bs-primary: #1E4680;
+    --bs-primary-rgb: 30, 70, 128;
+}
+
+.text-primary {
+    color: #1E4680 !important;
+}
+
+a.text-primary:hover,
+a.text-primary:focus {
+    color: #193b70 !important;
+    /* darker hover shade */
+}
+
+.bg-primary {
+    background-color: #1E4680 !important;
+}
+
+.border-primary {
+    border-color: #1E4680 !important;
+}
+
+.badge.bg-primary {
+    background-color: #1E4680 !important;
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary:disabled,
+.show>.btn-primary.dropdown-toggle {
+    color: #fff !important;
+    background-color: #1E4680 !important;
+    border-color: #1E4680 !important;
+    box-shadow: none !important;
+}
+
+.btn-primary:focus,
+.btn-primary:focus-visible {
+    box-shadow: 0 0 0 .25rem rgba(30, 70, 128, .4) !important;
+}
+
+.btn-outline-primary,
+.btn-outline-primary:focus,
+.btn-outline-primary:active,
+.btn-outline-primary:disabled,
+.show>.btn-outline-primary.dropdown-toggle {
+    color: #1E4680 !important;
+    border-color: #1E4680 !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.btn-outline-primary:hover {
+    color: #fff !important;
+    background-color: #1E4680 !important;
+    border-color: #1E4680 !important;
+}
+
+/* =========================================================
+   DANGER COLOR OVERRIDES (no Sass required)
+   ========================================================= */
+
+:root {
+    --bs-danger: #801D1D;
+    --bs-danger-rgb: 128, 29, 29;
+}
+
+.text-danger {
+    color: #801D1D !important;
+}
+
+a.text-danger:hover,
+a.text-danger:focus {
+    color: #6b1818 !important;
+    /* darker hover shade */
+}
+
+.bg-danger {
+    background-color: #801D1D !important;
+}
+
+.border-danger {
+    border-color: #801D1D !important;
+}
+
+.badge.bg-danger {
+    background-color: #801D1D !important;
+}
+
+.btn-danger,
+.btn-danger:hover,
+.btn-danger:focus,
+.btn-danger:active,
+.btn-danger:disabled,
+.show>.btn-danger.dropdown-toggle {
+    color: #fff !important;
+    background-color: #801D1D !important;
+    border-color: #801D1D !important;
+    box-shadow: none !important;
+}
+
+.btn-danger:focus,
+.btn-danger:focus-visible {
+    box-shadow: 0 0 0 .25rem rgba(128, 29, 29, .4) !important;
+}
+
+.btn-outline-danger,
+.btn-outline-danger:focus,
+.btn-outline-danger:active,
+.btn-outline-danger:disabled,
+.show>.btn-outline-danger.dropdown-toggle {
+    color: #801D1D !important;
+    border-color: #801D1D !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.btn-outline-danger:hover {
+    color: #fff !important;
+    background-color: #801D1D !important;
+    border-color: #801D1D !important;
+}
+
+/* =========================================================
+   SUCCESS COLOR OVERRIDES (no Sass required)
+   ========================================================= */
+:root {
+    --bs-success: #137A49;
+    --bs-success-rgb: 19, 122, 73;
+}
+
+.text-success {
+    color: #137A49 !important;
+}
+
+a.text-success:hover,
+a.text-success:focus {
+    color: #10683e !important;
+    /* darker hover shade */
+}
+
+.bg-success {
+    background-color: #137A49 !important;
+}
+
+.border-success {
+    border-color: #137A49 !important;
+}
+
+.badge.bg-success {
+    background-color: #137A49 !important;
+}
+
+.btn-success,
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success:disabled,
+.show>.btn-success.dropdown-toggle {
+    color: #fff !important;
+    background-color: #137A49 !important;
+    border-color: #137A49 !important;
+    box-shadow: none !important;
+}
+
+.btn-success:focus,
+.btn-success:focus-visible {
+    box-shadow: 0 0 0 .25rem rgba(19, 122, 73, .4) !important;
+}
+
+.btn-outline-success,
+.btn-outline-success:focus,
+.btn-outline-success:active,
+.btn-outline-success:disabled,
+.show>.btn-outline-success.dropdown-toggle {
+    color: #137A49 !important;
+    border-color: #137A49 !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.btn-outline-success:hover {
+    color: #fff !important;
+    background-color: #137A49 !important;
+    border-color: #137A49 !important;
+}
+
+/* ========================================================= */
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    font-family: "Nunito", sans-serif;
+    background-color: #ebd8ba;
+}
+
+.card {
+    background-color: #f2e5d1;
+}
+
+main {
+    /* This pushes the footer down */
+    flex: 1;
+}
+
+.text-secondary {
+    color: #555 !important;
+}
+
+/* navbar */
+.navbar {
+    border: none !important;
+}
+
+.navbar-nav {
+    font-size: 1.5rem;
+}
+
+ul {
+    padding: 0;
+}
+
+.card-body ul li {
+    list-style-type: none;
+}
+
+.breathwork-info ul li {
+    list-style-position: inside;
+    padding-left: 1rem;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar-brand span {
+    font-size: 1.5rem;
+    line-height: 1.5;
+    font-weight: 600;
+}
+
+.navbar-brand img {
+    height: 50px;
+    width: auto;
+}
+
+/* new-breathwork-form */
+.form-narrow {
+    max-width: 500px;
+}
+
+/* practice */
+
+.rounds-item {
+    margin-top: .5rem;
+}
+
+
+#phase {
+    font-size: 3rem;
+    background-color: #d9c7ac;
+}
+
+#timer {
+    min-height: 4rem;
+    line-height: 3rem;
+    font-size: 3rem;
+    display: block;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* solve timer div margin collapse after it's empty content */
+/* Trick for empty content */
+#timer::before {
+    content: "\00a0";
+    /* non-breaking space */
+    display: inline-block;
+    height: 0;
+    /* doesn't affect actual min-height */
+}
+
+#progressContainer {
+    width: 100%;
+    height: 10px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    background: #c5ccd6;
+    margin-top: 10px;
+    display: none;
+}
+
+#progressBar {
+    transition: width 1s linear;
+    height: 100%;
+    width: 0%;
+}
+
+#feedback {
+    font-size: 1.5rem;
+}
+
+textarea {
+    display: block;
+}
+
+textarea,
+input {
+    background-color: #f2e5d1 !important;
+    border: 1px solid #C2A688 !important;
+}
+
+.breathwork-player #rounds {
+    font-size: 2rem;
+}
+
+::placeholder,
+input[type="number"]::placeholder,
+#new-breathwork-form textarea::placeholder {
+    color: gray;
+    font-style: italic;
+}
+
+#guidance.collapsed {
+    display: -webkit-box;
+    /* show first 4 lines */
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+#guidance h4 {
+    margin-top: 1rem;
+}
+
+#guidance p {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+#guidance h4 {
+    margin-bottom: 1rem;
+}
+
+#notes {
+    padding: 1rem;
+    width: 100%;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+#notes:focus {
+    border-color: #537fbe;
+    outline: none;
+    background-color: #fff;
+}
+
+#showMoreBtn {
+    cursor: pointer;
+}
+
+#saveBtn {
+    margin-top: 1rem;
+}
+
+/* table */
+
+.table thead th {
+    background-color: #29221b !important;
+    color: #ffffff;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd)>* {
+    background-color: #f2e5d1 !important;
+}
+
+.table-striped>tbody>tr:nth-of-type(even)>* {
+    background-color: #f9f2e8 !important;
+}
+
+/* apology */
+
+.apology {
+    position: relative;
+}
+
+.apology img {
+    max-width: 600px;
+    width: 100%;
+    border: 1px solid #d6e4ff;
+}
+
+.apology-top,
+.apology-bottom {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.apology-top {
+    top: 5%;
+}
+
+.apology-bottom {
+    bottom: 5%;
+}
+
+/* footer */
+footer .copyright {
+    color: #555;
+}
