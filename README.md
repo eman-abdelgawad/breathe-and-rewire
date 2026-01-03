@@ -1,15 +1,16 @@
 # PROJECT TITLE: Breathe & Rewire
 
-#### Description:
+## Description:
 
 Breathe & Rewire is a breathwork Web application that is designed to help users practice structured breathing techniques. Users can create a profile, log in, choose a breathwork pattern, practice it through a guided interface, and save their completed sessions.
 
-**Why I chose this project?**
+### Why I chose this project?
+
 Movement and breathwork (breathing exercises) have a profound impact on my life, helping me experience a calmer and more balanced way of being. For this reason it was the first idea that came to my mind when choosing the final project. Each mindful breath gently retrains your nervous system, inviting calm and building resilience. Through this project, I hope to encourage exploration without self-judgment or self-stereotyping. Find the form of movement and breathwork that works for you.
 
 ---
 
-#### Features (Overview)
+## Features (Overview)
 
 - User authentication (registration and login).
 - Default and customizable Breathwork patterns.
@@ -19,7 +20,7 @@ Movement and breathwork (breathing exercises) have a profound impact on my life,
 
 ---
 
-#### Feature Details:
+## Feature Details:
 
 **User authentication:**
 
@@ -82,7 +83,7 @@ The layout adapts to different screen sizes while maintaining readability and vi
 
 ---
 
-##### Technologies Used
+### Technologies Used
 
 - Python / Flask
 - SQLite
@@ -91,7 +92,7 @@ The layout adapts to different screen sizes while maintaining readability and vi
 
 ---
 
-#### Installation/How to Run
+## Installation/How to Run
 
 This project was developed in CS50.dev. To run the application:
 1. Navigate to the project directory
@@ -101,7 +102,7 @@ This project was developed in CS50.dev. To run the application:
 
 ---
 
-##### Project Structure
+## Project Structure
 
 ```
 project/
@@ -129,7 +130,7 @@ project/
 
 ---
 
-#### File Descriptions
+## File Descriptions
 
 **`app.py`**
 Main Flask application entry point.
@@ -144,7 +145,7 @@ Lists all Python dependencies required to run the application, ensuring a consis
 **`breathwork.db`**
 SQLite database storing user accounts, breathwork patterns, and session history.
 
-##### `templates/`
+### `templates/`
 
 Contains all HTML templates rendered by Flask using Jinja2.
 
@@ -177,7 +178,7 @@ Contains all HTML templates rendered by Flask using Jinja2.
 **`settings.html`**
   User settings page that allows authenticated users to change their password.
 
-##### `static/`
+### `static/`
 
 Contains static assets used by the application.
 
@@ -186,7 +187,7 @@ Contains static assets used by the application.
 
 ---
 
-##### Design Choices
+## Design Choices
 
 Several design decisions were made during development:
 
