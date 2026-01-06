@@ -1,0 +1,25 @@
+# Ensure core languages are counted
+*.py linguist-detectable=true
+*.html linguist-detectable=true
+*.css linguist-detectable=true
+*.js linguist-detectable=true
+
+# Promote notebooks and templates to the intended languages
+*.ipynb linguist-language=Python
+*.j2 linguist-language=HTML
+*.jinja linguist-language=HTML
+*.jinja2 linguist-language=HTML
+
+# Count SQL (SQLite schema/dumps), not binary .db
+*.sql linguist-detectable=true
+*.db linguist-generated=true
+
+# Treat minified or vendored assets as vendored (excluded from stats)
+*.min.js linguist-vendored
+vendor/** linguist-vendored
+third_party/** linguist-vendored
+
+# Optional: mark docs and static assets to avoid skew
+docs/** linguist-documentation
+*.svg linguist-generated
+*.png linguist-generated
